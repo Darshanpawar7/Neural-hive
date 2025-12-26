@@ -1,0 +1,153 @@
+/* ===========================
+   WORLD CLASS NEURALHIVE THEME
+   =========================== */
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --accent: #e6b800;
+  --border: #bfbfbf;
+}
+
+/* -------------------------------
+   DARK MODE — PREMIUM LEVEL
+-------------------------------- */
+.dark {
+  --bg: #010409;
+  --text: #e6e6e6;
+  --accent: #FFD36E;
+  --border: rgba(255,255,255,0.18);
+}
+
+/* Background cinematic lighting */
+.dark body {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 215, 130, 0.12), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255, 215, 130, 0.08), transparent 50%),
+    linear-gradient(140deg, #020203, #070a14);
+  color: var(--text);
+}
+
+/* Subtle moving particle grid */
+.dark body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.25;
+  pointer-events: none;
+  animation: gridFloat 14s infinite linear;
+}
+
+@keyframes gridFloat {
+  0% { transform: translateY(0); opacity: .2; }
+  50% { transform: translateY(4px); opacity: .35; }
+  100% { transform: translateY(0); opacity: .2; }
+}
+
+/* -------------------------------
+   TYPOGRAPHY
+-------------------------------- */
+body {
+  font-family: "IBM Plex Mono", monospace !important;
+  letter-spacing: 0.2px;
+}
+
+h1, h2, h3 {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  letter-spacing: .4px;
+}
+
+.dark h1, .dark h2, .dark h3 {
+  text-decoration-color: var(--accent);
+  color: white;
+}
+
+.dark p {
+  color: #cfcfcf;
+  line-height: 1.75;
+}
+
+/* -------------------------------
+   DIVIDERS & LINKS
+-------------------------------- */
+hr {
+  border: none;
+  border-top: 2px dotted var(--border);
+  margin: 2rem 0;
+}
+
+.dark hr {
+  border-top: 2px dotted rgba(255,211,110,0.7);
+}
+
+a {
+  color: var(--text);
+  text-decoration-thickness: 2px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+.dark a {
+  color: white;
+}
+
+.dark a:hover {
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(255,211,110,.5);
+}
+
+/* -------------------------------
+   NAVBAR
+-------------------------------- */
+.dark header {
+  background: rgba(0,0,0,.55);
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(6px);
+}
+
+/* -------------------------------
+   CARDS (Posts / Lists)
+-------------------------------- */
+.card {
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 12px;
+  transition: .3s;
+}
+
+.dark .card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(5px);
+}
+
+.dark .card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 35px rgba(255,211,110,.3);
+  transform: translateY(-5px) scale(1.01);
+}
+
+/* -------------------------------
+   ASIDE / TOC
+-------------------------------- */
+.dark aside {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 10px;
+}
+
+.dark ::selection {
+  background: rgba(255,211,110,.65);
+  color: black;
+}
+
+/* Smooth everything */
+* {
+  transition: background .25s ease, color .25s ease, border .25s ease;
+}

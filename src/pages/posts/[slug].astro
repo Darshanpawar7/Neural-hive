@@ -1,0 +1,107 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const modules = import.meta.glob("../../content/posts/*.md");
+
+  const entries = await Promise.all(
+    Object.values(modules).map(async (loader: any) => {
+      const mod = await loader();
+      return {
+        params: { slug: mod.frontmatter.slug },
+        props: {
+          frontmatter: mod.frontmatter,
+          Content: mod.default
+        }
+      };
+    })
+  );
+
+  return entries;
+}
+
+const { frontmatter, Content } = Astro.props;
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+  <article class="prose dark:prose-invert max-w-none">
+    <h1>{frontmatter.title}</h1>
+
+    <div class="text-sm text-gray-500 mb-4">
+      {frontmatter.date} • <span id="readingTime">—</span> • <span id="views">—</span>
+    </div>
+
+    {frontmatter.hero_image ? (
+      <img
+        src={frontmatter.hero_image}
+        alt={frontmatter.title}
+        class="rounded"
+        loading="lazy"
+      />
+    ) : null}
+
+    <div class="mt-6 grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-2" id="article">
+        <Content />
+      </div>
+
+      <aside class="md:col-span-1">
+        <div
+          id="toc"
+          class="sticky top-24 bg-gray-50 dark:bg-black/40 p-4 rounded text-sm border dark:border-gray-700"
+        ></div>
+      </aside>
+    </div>
+  </article>
+
+  <script is:inline>
+    // Reading time
+    (function () {
+      const article = document.getElementById("article");
+      const text = article ? article.innerText || "" : "";
+      const words = text.trim().split(/\s+/).length || 0;
+      const mins = Math.max(1, Math.round(words / 200));
+      const rt = document.getElementById("readingTime");
+      if (rt) rt.innerText = mins + " min read";
+    })();
+
+    // TOC
+    (function () {
+      const article = document.getElementById("article");
+      const toc = document.getElementById("toc");
+      if (!article || !toc) return;
+
+      const headings = article.querySelectorAll("h2, h3");
+      if (headings.length === 0) {
+        toc.innerHTML = "<em>No sections</em>";
+        return;
+      }
+
+      let html = "<strong>Table of contents</strong><ul style='margin-top:8px'>";
+      headings.forEach((h) => {
+        const id = h.innerText
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        h.id = id;
+        html += `<li style="margin-bottom:6px"><a href="#${id}" class="underline">${h.innerText}</a></li>`;
+      });
+      html += "</ul>";
+      toc.innerHTML = html;
+    })();
+
+    // Views counter
+    (function () {
+      const slug = location.pathname.split("/").filter(Boolean).pop();
+      if (!slug) return;
+
+      fetch(`/.netlify/functions/view-counter?slug=${slug}`)
+        .then((r) => r.json())
+        .then((d) => {
+          const v = document.getElementById("views");
+          if (v && d?.count !== undefined) v.innerText = d.count + " views";
+        })
+        .catch(() => {});
+    })();
+  </script>
+</BaseLayout>

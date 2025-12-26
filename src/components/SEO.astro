@@ -1,0 +1,13 @@
+---
+const { title, description, image, url } = Astro.props;
+const site = 'ML Mondays';
+---
+<head>
+  <title>{title ? `${title} — ${site}` : site}</title>
+  <meta name="description" content={description || ""} />
+  <meta property="og:site_name" content={site} />
+  <meta property="og:title" content={title || site} />
+  <meta property="og:description" content={description || ""} />
+  <meta property="og:image" content={image || '/uploads/nh-default.png'} />
+  <link rel="canonical" href={url || 'https://your-site-url.netlify.app'} />
+</head>

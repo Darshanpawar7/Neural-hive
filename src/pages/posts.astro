@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const modules = import.meta.glob("../content/posts/*.md", { eager: true }) as any;
+
+const posts = Object.values(modules)
+  .map((m: any) => m.frontmatter)
+  .sort(
+    (a: any, b: any) =>
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+const tags = [...new Set(posts.flatMap((p: any) => p.tags || []))];
+---
+
+<BaseLayout title="All Posts">
+  <h1 style="text-decoration:underline; text-underline-offset:4px">All Posts</h1>
+
+  <hr style="border:none;border-top:2px dotted var(--border);margin:18px 0" />
+
+  <!-- Search -->
+  <input
+    id="search"
+    placeholder="Search posts..."
+    class="w-full p-3 border rounded dark:bg-black/40"
+  />
+
+  <!-- Tags -->
+  <div class="mt-4 mb-6 flex gap-3 flex-wrap">
+    <button class="tag px-3 py-1 border rounded text-sm">All</button>
+    {
+      tags.map((t) => (
+        <button class="tag px-3 py-1 border rounded text-sm">
+          {t}
+        </button>
+      ))
+    }
+  </div>
+
+  <div id="posts-grid" class="grid gap-6">
+    {
+      posts.map((p: any) => (
+        <a
+          href={`/posts/${p.slug}`}
+          class="block card"
+          data-title={p.title.toLowerCase()}
+          data-tags={(p.tags || []).join(" ").toLowerCase()}
+        >
+          <h2 style="text-decoration:underline">
+            {p.title}
+          </h2>
+
+          <p class="text-sm text-gray-500 mt-2">{p.description}</p>
+
+          <p class="text-xs mt-2 text-gray-400">
+            {p.date} • {p.est_read || "6"} min read
+          </p>
+        </a>
+      ))
+    }
+  </div>
+
+  <script is:inline>
+    const search = document.getElementById("search");
+    const posts = [...document.querySelectorAll(".card")];
+    const tags = [...document.querySelectorAll(".tag")];
+
+    search.addEventListener("input", () => {
+      const text = search.value.toLowerCase();
+      posts.forEach(p => {
+        p.style.display = p.dataset.title.includes(text) ? "block" : "none";
+      });
+    });
+
+    tags.forEach(btn => btn.addEventListener("click", () => {
+      const tag = btn.innerText.toLowerCase();
+      if (tag === "all") {
+        posts.forEach(p => p.style.display = "block");
+      } else {
+        posts.forEach(p => {
+          p.style.display = p.dataset.tags.includes(tag) ? "block" : "none";
+        });
+      }
+    }));
+  </script>
+</BaseLayout>

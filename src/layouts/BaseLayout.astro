@@ -1,0 +1,115 @@
+---
+const { title = "ML Mondays", description = "" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="theme-color" content="#FFD36E" />
+
+    <!-- FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "IBM Plex Mono", monospace !important;
+        letter-spacing: 0.3px;
+      }
+    </style>
+  </head>
+
+  <body class="font-body min-h-screen flex flex-col">
+    <!-- Page Scroll Progress -->
+    <div id="progress" class="fixed top-0 left-0 h-1 bg-yellow-400 z-50" style="width:0%"></div>
+
+    <!-- HEADER -->
+    <header class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
+      <a href="/" class="text-3xl underline">ML Mondays</a>
+
+      <nav class="flex gap-5">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/posts">Posts</a>
+        <a href="/ethos">Ethos</a>
+
+        <!-- THEME BUTTON -->
+        <button id="theme-toggle" class="text-xl cursor-pointer select-none">
+          🌓
+        </button>
+      </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main class="max-w-6xl mx-auto px-6 py-10 w-full flex-auto">
+      <slot />
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-12 text-center text-sm text-gray-500">
+      NeuralHive PESU ECC © {new Date().getFullYear()}
+    </footer>
+
+
+    <!-- DARK MODE SCRIPT (Works 100% on Astro) -->
+    <script is:inline>
+      (function () {
+        const root = document.documentElement;
+        const KEY = "nh_theme";
+
+        function apply(mode) {
+          if (mode === "dark") {
+            root.classList.add("dark");
+          } else {
+            root.classList.remove("dark");
+          }
+          localStorage.setItem(KEY, mode);
+        }
+
+        // Load on startup
+        let saved = localStorage.getItem(KEY);
+        if (!saved) {
+          saved = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+          localStorage.setItem(KEY, saved);
+        }
+        apply(saved);
+
+        // Button toggle
+        window.addEventListener("DOMContentLoaded", () => {
+          const btn =
+            document.getElementById("theme-toggle") ||
+            document.getElementById("themeToggle");
+
+          if (!btn) return;
+
+          btn.addEventListener("click", () => {
+            const current = root.classList.contains("dark") ? "dark" : "light";
+            const next = current === "dark" ? "light" : "dark";
+            apply(next);
+          });
+        });
+      })();
+    </script>
+
+    <!-- PROGRESS BAR SCRIPT -->
+    <script is:inline>
+      const bar = document.getElementById("progress");
+      window.addEventListener("scroll", () => {
+        const h = document.documentElement;
+        const scrolled =
+          (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 || 0;
+        bar.style.width = scrolled + "%";
+      });
+    </script>
+  </body>
+</html>

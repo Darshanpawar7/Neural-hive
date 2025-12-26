@@ -1,0 +1,28 @@
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto;
+}
+
+a:hover {
+  color: #a855f7;
+}
+
+.card {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(18px);
+  transition: 0.3s;
+}
+.dark body {
+  background: #050510;
+  color: #e5e7eb;
+}
+
+.dark .card {
+  background: rgba(5,5,20,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px rgba(168,85,247,.3);
+}

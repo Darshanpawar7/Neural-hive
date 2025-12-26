@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+
+const modules = import.meta.glob("../content/posts/*.md", { eager: true }) as any;
+const posts = Object.values(modules).map((m:any) => m.frontmatter).sort((a:any,b:any)=> new Date(b.date).getTime() - new Date(a.date).getTime());
+const featured = posts[0];
+---
+
+<BaseLayout title="ML Mondays">
+
+  <div class="flex justify-between items-center">
+    <img src="/bee.png" width="380">
+    <img src="/neural.png" width="220">
+  </div>
+
+  <h1># ML MONDAYS</h1>
+  <p>[Insert short About section, with good usage of markdown syntax]</p>
+
+  <hr/>
+
+  {posts.map((post: any) => (
+    <section>
+      <h2>
+        <a href={`/posts/${post.slug}`}>
+          {post.title}
+        </a>
+      </h2>
+
+      <p class="text-sm text-gray-500">
+        {post.date} • {post.read_time}
+      </p>
+
+      <div class="grid grid-cols-5 gap-4 mt-3">
+        <img src={post.hero_image} class="rounded border col-span-1"/>
+
+        <div class="col-span-4">
+          <p>{post.description}</p>
+          <a href={`/posts/${post.slug}`} class="underline">
+            Read more →
+          </a>
+        </div>
+      </div>
+
+      <hr/>
+    </section>
+  ))}
+</BaseLayout>
