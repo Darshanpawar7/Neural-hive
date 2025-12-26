@@ -5,8 +5,10 @@ export async function getStaticPaths() {
   const modules = import.meta.glob("../../content/posts/*.md");
 
   const entries = await Promise.all(
-    Object.values(modules).map(async (loader: any) => {
-      const mod = await loader();
+    Object.entries(modules).map(async ([, loader]) => {
+      const mod: any = await (loader as any)();
+      if (!mod?.frontmatter?.slug) return null;
+
       return {
         params: { slug: mod.frontmatter.slug },
         props: {
@@ -17,26 +19,29 @@ export async function getStaticPaths() {
     })
   );
 
-  return entries;
+  return entries.filter(Boolean);
 }
 
 const { frontmatter, Content } = Astro.props;
+
+if (!frontmatter) {
+  throw new Error("Post not found");
+}
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description}>
   <article class="prose dark:prose-invert max-w-none">
     <h1>{frontmatter.title}</h1>
 
-    <div class="text-sm text-gray-500 mb-4">
-      {frontmatter.date} • <span id="readingTime">—</span> • <span id="views">—</span>
-    </div>
+    <p class="text-sm text-gray-500 dark:text-gray-400">
+      {frontmatter.date} • <span id="readingTime">—</span>
+    </p>
 
     {frontmatter.hero_image ? (
       <img
         src={frontmatter.hero_image}
         alt={frontmatter.title}
-        class="rounded"
-        loading="lazy"
+        class="rounded border dark:border-gray-800"
       />
     ) : null}
 
@@ -46,28 +51,23 @@ const { frontmatter, Content } = Astro.props;
       </div>
 
       <aside class="md:col-span-1">
-        <div
-          id="toc"
-          class="sticky top-24 bg-gray-50 dark:bg-black/40 p-4 rounded text-sm border dark:border-gray-700"
-        ></div>
+        <div id="toc" class="sticky top-24 text-sm"></div>
       </aside>
     </div>
   </article>
 
   <script is:inline>
-    // Reading time
     (function () {
+      // Reading time
       const article = document.getElementById("article");
-      const text = article ? article.innerText || "" : "";
-      const words = text.trim().split(/\s+/).length || 0;
-      const mins = Math.max(1, Math.round(words / 200));
-      const rt = document.getElementById("readingTime");
-      if (rt) rt.innerText = mins + " min read";
-    })();
+      if (article) {
+        const words = (article.innerText || "").trim().split(/\s+/).length;
+        const mins = Math.max(1, Math.round(words / 200));
+        const rt = document.getElementById("readingTime");
+        if (rt) rt.innerText = mins + " min read";
+      }
 
-    // TOC
-    (function () {
-      const article = document.getElementById("article");
+      // Table of Contents
       const toc = document.getElementById("toc");
       if (!article || !toc) return;
 
@@ -77,31 +77,25 @@ const { frontmatter, Content } = Astro.props;
         return;
       }
 
-      let html = "<strong>Table of contents</strong><ul style='margin-top:8px'>";
-      headings.forEach((h) => {
-        const id = h.innerText
+      var html = "<strong>Table of contents</strong><ul style='margin-top:8px'>";
+      headings.forEach(function (h) {
+        var id = h.innerText
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, "");
+
         h.id = id;
-        html += `<li style="margin-bottom:6px"><a href="#${id}" class="underline">${h.innerText}</a></li>`;
+
+        html +=
+          '<li style="margin-bottom:6px"><a href="#' +
+          id +
+          '" class="underline">' +
+          h.innerText +
+          "</a></li>";
       });
+
       html += "</ul>";
       toc.innerHTML = html;
-    })();
-
-    // Views counter
-    (function () {
-      const slug = location.pathname.split("/").filter(Boolean).pop();
-      if (!slug) return;
-
-      fetch(`/.netlify/functions/view-counter?slug=${slug}`)
-        .then((r) => r.json())
-        .then((d) => {
-          const v = document.getElementById("views");
-          if (v && d?.count !== undefined) v.innerText = d.count + " views";
-        })
-        .catch(() => {});
     })();
   </script>
 </BaseLayout>

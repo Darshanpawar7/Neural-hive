@@ -1,15 +1,16 @@
 ---
 const { post } = Astro.props;
 ---
-<article class="p-6 bg-white dark:bg-[#0d0d14] border border-gray-200 dark:border-gray-800 rounded-xl transition hover:shadow-glow">
+<article class="card">
   <a href={`/posts/${post.slug}`}>
-    <div class="flex flex-col">
-      <h3 class="text-xl font-semibold mb-2">{post.title}</h3>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{post.description}</p>
-      <div class="flex items-center justify-between text-xs text-gray-500">
-        <div>{post.date}</div>
-        <div>{post.author ? post.author : "Neural Hive"} • {post.est_read || "5"} min read</div>
-      </div>
-    </div>
+    <h3 class="text-xl font-semibold mb-1">{post.title}</h3>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+      {post.description}
+    </p>
+
+    <p class="text-xs text-gray-500 dark:text-gray-400">
+      {post.date} • {post.est_read || "5"} min read
+    </p>
   </a>
 </article>
