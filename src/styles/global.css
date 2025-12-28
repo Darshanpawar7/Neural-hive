@@ -11,6 +11,7 @@ body {
 /* Dark */
 html.dark body {
   color: #e5e5e5;
+  background: #010409;
 }
 
 /* Typography */
@@ -53,4 +54,18 @@ html.dark .card {
 /* Smooth */
 * {
   transition: color .2s ease, background .2s ease, border .2s ease;
+}
+
+.post-link {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+html.dark .post-link {
+  text-decoration-color: var(--accent);
+}
+
+.post-link:hover {
+  color: var(--accent);
 }

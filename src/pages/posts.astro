@@ -8,17 +8,22 @@ const posts = Object.values(modules)
   .sort((a:any,b:any)=>new Date(b.date).getTime()-new Date(a.date).getTime());
 ---
 <BaseLayout title="All Posts">
-  <h1>All Posts</h1>
+  <h1># All articles</h1>
 
   <hr/>
 
-  <div class="grid gap-6 mt-4">
+  <ul class="space-y-4">
     {posts.map((p:any)=>(
-      <a href={`/posts/${p.slug}`} class="card block">
-        <h2>{p.title}</h2>
-        <p class="text-sm text-gray-500">{p.description}</p>
-        <p class="text-xs text-gray-400 mt-1">{p.date}</p>
-      </a>
+      <li>
+        * <a href={`/posts/${p.slug}`} class="post-link">
+          {p.title}
+        </a>
+        <span class="text-gray-400 text-sm">
+          {p.date} • {p.est_read || p.read_time || "8 min"} read
+        </span>
+      </li>
     ))}
-  </div>
+  </ul>
+
+  <hr/>
 </BaseLayout>
