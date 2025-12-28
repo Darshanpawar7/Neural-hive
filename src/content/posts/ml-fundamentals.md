@@ -10,9 +10,6 @@ est_read: 6
 draft: false
 ---
 # Machine Learning Fundamentals: A Beginner's Complete Guide
-
-**Posted on Aug 1, 2025 • 6 min read**
-
 **tl;dr:** A Beginner Complete Guide.
 
 ---
@@ -27,6 +24,8 @@ Machine learning is a subset of artificial intelligence (AI) that enables comput
 
 Think of it like teaching a child to recognize animals. Instead of describing every possible feature of a cat, you show them hundreds of cat pictures. Eventually, they learn to identify cats on their own by recognizing common patterns and features.
 
+![Machine Learning Process](/uploads/ml-given-1.webp)
+
 ---
 
 ## The Machine Learning Process
@@ -35,7 +34,9 @@ Building a machine learning model involves several key stages that work together
 
 ### 1. Data Collection and Preparation
 
-The machine learning process starts with collecting and processing training data. There’s a famous saying in the ML community: “garbage in, garbage out.” This means that an ML model is only as good as the data used to train it. Data preparation and processing might seem routine, but it’s arguably the most critical stage that can make or break your model’s performance.
+The machine learning process starts with collecting and processing training data. There’s a famous saying in the ML community: **“garbage in, garbage out.”** This means that an ML model is only as good as the data used to train it. Data preparation and processing might seem routine, but it’s arguably the most critical stage that can make or break your model’s performance.
+
+![Machine Learning Process](/uploads/ml-generate-1.png)
 
 #### Types of Data
 
@@ -63,6 +64,8 @@ The machine learning process starts with collecting and processing training data
 
 Once your data is prepared, you need to choose an appropriate machine learning algorithm. The choice depends on several factors:
 
+![Machine Learning Process](/uploads/ml-generate-2.png)
+
 * **Problem type:** Classification, regression, clustering, or other tasks.
 * **Data size:** Some algorithms work better with large datasets, others with smaller ones.
 * **Interpretability needs:** Some algorithms provide clear explanations, others are “black boxes.”
@@ -72,9 +75,13 @@ Once your data is prepared, you need to choose an appropriate machine learning a
 
 Training is where the magic happens. The algorithm analyzes your data to learn patterns and relationships. This process varies depending on the learning approach.
 
+![Machine Learning Process](/uploads/ml-given-2.png)
+
 ---
 
 ## Types of Machine Learning
+
+![Machine Learning Process](/uploads/ml-given-3.png)
 
 ### Supervised Learning
 
@@ -167,6 +174,8 @@ To ensure your model generalizes well to new data, you should use techniques lik
 ## Inferencing: Putting Models to Work
 
 After training and validation, it’s time to use your model to make predictions or decisions. This process is called inferencing.
+
+![Machine Learning Process](/uploads/ml-generate-3.png)
 
 ### Types of Inferencing
 

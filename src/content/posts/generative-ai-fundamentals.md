@@ -62,6 +62,8 @@ Machine learning has existed for decades, so what has led to the emergence of ge
 
 Generative AI is powered by foundation models (FMs) – large-scale models pretrained on internet-scale data. These models represent a paradigm shift from traditional machine learning approaches.
 
+![Machine Learning Process](/uploads/g_ai-1.png)
+
 ### Traditional ML vs. Foundation Models
 
 **Traditional Approach**:
@@ -153,14 +155,18 @@ Tokens: The basic units of text processing
 * Provide standardization for model input
 * Example: “A” “puppy” “is” “to” “dog” “as” “a” “kitten” “is” “to"“cat.”
 
-Embeddings and Vectors: Numerical representations of meaning
+![Machine Learning Process](/uploads/g_ai-2.png)
+
+**Embeddings and Vectors:** Numerical representations of meaning
 
 * Each token becomes a vector (list of numbers)
 * Similar concepts have similar vectors
 * Example: “cat,” “feline,” and “kitten” have nearby vectors
 * Enables understanding of semantic relationships 
 
-Attention Mechanisms: How models focus on relevant information
+![Machine Learning Process](/uploads/g_ai-3.png)
+
+**Attention Mechanisms:** How models focus on relevant information
 
 * Determine which parts of input are most important
 * Enable understanding of context and dependencies
@@ -168,15 +174,17 @@ Attention Mechanisms: How models focus on relevant information
 
 #### LLM Capabilities
 
-* Text Generation: Creating coherent, contextually appropriate text
-* Question Answering: Understanding and responding to queries
-* Summarization: Condensing long documents into key points
-* Translation: Converting between languages
-* Code Generation: Writing and debugging programming code
-* Creative Writing: Producing stories, poems, and scripts
+* **Text Generation:** Creating coherent, contextually appropriate text
+* **Question Answering:** Understanding and responding to queries
+* **Summarization:** Condensing long documents into key points
+* **Translation:** Converting between languages
+* **Code Generation:** Writing and debugging programming code
+* **Creative Writing:** Producing stories, poems, and scripts
 
 ### Diffusion Models
 Diffusion models represent a breakthrough in image generation, powering tools like DALL-E, Midjourney, and Stable Diffusion.
+
+![Machine Learning Process](/uploads/g_ai-4.png)
 
 #### The Diffusion Process
 Forward Diffusion:
@@ -185,11 +193,15 @@ Forward Diffusion:
 * Gradually adds noise until only random noise remains
 * Teaches the model what noise looks like at each step
 
+![Machine Learning Process](/uploads/g_ai-5.png)
+
 Reverse Diffusion:
 
 * Starts with pure noise
 * Gradually removes noise to create a coherent image
 * Guided by text prompts or other conditions
+
+![Machine Learning Process](/uploads/g_ai-6.png)
 
 #### Applications Beyond Images
 * Video Generation: Creating short video clips

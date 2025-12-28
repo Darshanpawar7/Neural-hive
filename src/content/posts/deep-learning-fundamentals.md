@@ -24,6 +24,8 @@ Unlike traditional machine learning algorithms that require manual feature engin
 
 At the core of deep learning are neural networks – computational models that form the building blocks of intelligent systems.
 
+![Machine Learning Process](/uploads/dl-1.png)
+
 ### How Neural Networks Work
 
 Just like our brains have neurons connected to each other through synapses, neural networks consist of interconnected nodes (artificial neurons) organized into layers. These layers include:
