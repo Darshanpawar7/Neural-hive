@@ -4,7 +4,7 @@ slug: "machine-learning-fundamentals"
 date: "Aug 1, 2025 "
 description: "A complete ML Beginner guide."
 tags: ["machine learning","guide","beginner"]
-hero_image: "/uploads/ml-fundamentals-hero.jpg"
+hero_image: "/uploads/ml_fundamentals.png"
 author: "Neural Hive"
 est_read: 6
 draft: false

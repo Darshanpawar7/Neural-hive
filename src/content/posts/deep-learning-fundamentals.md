@@ -4,7 +4,7 @@ slug: "deep-learning-fundamentals"
 date: "Aug 17, 2025"
 description: "An approachable guide to deep learning basics and neural networks."
 tags: ["deep-learning","neural-networks"]
-hero_image: "/uploads/deep-learning-hero.jpg"
+hero_image: "/uploads/deep_learning.png"
 author: "Neural Hive"
 est_read: 8
 draft: false

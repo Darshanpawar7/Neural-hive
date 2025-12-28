@@ -48,13 +48,19 @@ import "../styles/global.css";
     (function () {
       const root = document.documentElement;
       const KEY = "nh_theme";
+      const btn = document.getElementById("theme-toggle");
 
       function apply(mode) {
-        if (mode === "dark") root.classList.add("dark");
-        else root.classList.remove("dark");
-        localStorage.setItem(KEY, mode);
-      }
-
+    if (mode === "dark") {
+    root.classList.add("dark");
+    btn.textContent = "☀️";
+    } 
+    else {
+    root.classList.remove("dark");
+    btn.textContent = "🌙";
+    }
+    localStorage.setItem(KEY, mode);
+    }
       let saved = localStorage.getItem(KEY);
       if (!saved) {
         saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";

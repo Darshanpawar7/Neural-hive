@@ -141,23 +141,23 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"posts": {
-"2025-08-01-ml-fundamentals.md": {
-	id: "2025-08-01-ml-fundamentals.md";
-  slug: "machine-learning-fundamentals";
-  body: string;
-  collection: "posts";
-  data: any
-} & { render(): Render[".md"] };
-"2025-08-17-deep-learning-fundamentals.md": {
-	id: "2025-08-17-deep-learning-fundamentals.md";
+"deep-learning-fundamentals.md": {
+	id: "deep-learning-fundamentals.md";
   slug: "deep-learning-fundamentals";
   body: string;
   collection: "posts";
   data: any
 } & { render(): Render[".md"] };
-"2025-09-07-generative-ai-fundamentals.md": {
-	id: "2025-09-07-generative-ai-fundamentals.md";
+"generative-ai-fundamentals.md": {
+	id: "generative-ai-fundamentals.md";
   slug: "generative-ai-fundamentals";
+  body: string;
+  collection: "posts";
+  data: any
+} & { render(): Render[".md"] };
+"ml-fundamentals.md": {
+	id: "ml-fundamentals.md";
+  slug: "machine-learning-fundamentals";
   body: string;
   collection: "posts";
   data: any

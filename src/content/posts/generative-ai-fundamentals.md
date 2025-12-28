@@ -4,7 +4,7 @@ slug: "generative-ai-fundamentals"
 date: "Sep 7, 2025"
 description: "Foundation models and creative intelligence — transformers, diffusion models, and the landscape of generative AI."
 tags: ["generative-ai", "foundation-models", "guide"]
-hero_image: "/uploads/generative-ai-hero.jpg"
+hero_image: "/uploads/generative_ai.png"
 author: "Neural Hive"
 est_read: 10
 draft: false
