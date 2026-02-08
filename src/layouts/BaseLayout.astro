@@ -1,6 +1,9 @@
 ---
 const { title = "ML Mondays", description = "" } = Astro.props;
 import "../styles/global.css";
+
+// Logic to identify the active page
+const pathname = new URL(Astro.request.url).pathname;
 ---
 <!doctype html>
 <html lang="en">
@@ -8,59 +11,93 @@ import "../styles/global.css";
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link rel="icon" type="image/x-icon" href="/uploads/favicon.ico" />
+
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  
+  <style is:global>
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+    .lenis.lenis-scrolling iframe {
+      pointer-events: none;
+    }
+  </style>
 </head>
 
-<body class="min-h-screen flex flex-col bg-[#fdfdfd] dark:bg-[#010409]">
+<body class="bg-[#fdfdfd] dark:bg-[#010409]">
   <div id="progress" class="fixed top-0 left-0 h-[2px] bg-yellow-400 z-50" style="width:0%"></div>
 
-  <header class="py-6 sticky top-0 bg-white/80 dark:bg-[#010409]/70 backdrop-blur border-b border-gray-200 dark:border-gray-800 z-40">
-    <div class="max-w-5xl mx-auto flex justify-between items-center px-6">
-      <a href="/" class="text-2xl underline">ML Mondays</a>
+  <div class="relative z-10 flex flex-col min-h-screen">
+    
+    <header class="py-6 sticky top-0 z-40 px-4">
+      <div class="max-w-2xl mx-auto">
+        <nav class="flex justify-center items-center gap-20 py-3 px-8 bg-white/80 dark:bg-[#010409]/70 backdrop-blur border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
+          
+          <a href="/" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+            Home
+          </a>
+          <a href="/about" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/about" || pathname === "/about/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+            About
+          </a>
+          <a href="/posts" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname.includes("/posts") ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+            Posts
+          </a>
+          <a href="/ethos" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/ethos" || pathname === "/ethos/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+            Ethos
+          </a>
 
-      <nav class="flex gap-6 text-sm">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/posts">Posts</a>
-        <a href="/ethos">Ethos</a>
+          <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-2"></div>
 
-        <button id="theme-toggle" class="px-2 py-1 border rounded dark:border-gray-600">
-          🌙
-        </button>
-      </nav>
-    </div>
-  </header>
+          <button id="theme-toggle" class="-ml-12 hover:scale-110 transition-transform focus:outline-none">
+            🌙
+          </button>
+        </nav>
+      </div>
+    </header>
 
-  <main class="max-w-5xl mx-auto px-6 py-10 w-full flex-auto">
-    <slot />
-  </main>
+    <main class="max-w-5xl mx-auto px-6 py-10 w-full flex-grow">
+      <slot />
+    </main>
 
-  <footer class="py-12 text-center text-sm text-gray-500 dark:text-gray-400">
-    NeuralHive • ML Mondays • © {new Date().getFullYear()}
-  </footer>
+    <footer class="py-12 text-center text-sm text-gray-500 dark:text-gray-400">
+      NeuralHive • ML Mondays • © {new Date().getFullYear()}
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
   <script is:inline>
     (function () {
       const root = document.documentElement;
       const KEY = "nh_theme";
-      const btn = document.getElementById("theme-toggle");
-
+      
       function apply(mode) {
-    if (mode === "dark") {
-    root.classList.add("dark");
-    btn.textContent = "☀️";
-    } 
-    else {
-    root.classList.remove("dark");
-    btn.textContent = "🌙";
-    }
-    localStorage.setItem(KEY, mode);
-    }
+        const btn = document.getElementById("theme-toggle");
+        if (mode === "dark") {
+          root.classList.add("dark");
+          if(btn) btn.textContent = "☀️";
+        } else {
+          root.classList.remove("dark");
+          if(btn) btn.textContent = "🌙";
+        }
+        localStorage.setItem(KEY, mode);
+      }
+
       let saved = localStorage.getItem(KEY);
       if (!saved) {
         saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -73,13 +110,26 @@ import "../styles/global.css";
           const current = root.classList.contains("dark") ? "dark" : "light";
           apply(current === "dark" ? "light" : "dark");
         });
-      });
 
-      const bar = document.getElementById("progress");
-      window.addEventListener("scroll", () => {
-        const h = document.documentElement;
-        const val = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 || 0;
-        bar.style.width = val + "%";
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+        });
+
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        const bar = document.getElementById("progress");
+        lenis.on('scroll', (e) => {
+          const val = (e.animatedScroll / (e.dimensions.scrollHeight - e.dimensions.height)) * 100 || 0;
+          if (bar) bar.style.width = val + "%";
+        });
       });
     })();
   </script>
