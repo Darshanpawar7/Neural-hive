@@ -46,26 +46,29 @@ const pathname = new URL(Astro.request.url).pathname;
     
     <header class="py-6 sticky top-0 z-40 px-4">
       <div class="max-w-2xl mx-auto">
-        <nav class="flex justify-center items-center gap-20 py-3 px-8 bg-white/80 dark:bg-[#010409]/70 backdrop-blur border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
+        <nav class="flex items-center py-3 px-6 md:px-8 bg-white/80 dark:bg-[#010409]/70 backdrop-blur border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
           
-          <a href="/" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
-            Home
-          </a>
-          <a href="/about" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/about" || pathname === "/about/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
-            About
-          </a>
-          <a href="/posts" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname.includes("/posts") ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
-            Posts
-          </a>
-          <a href="/ethos" class={`hover:text-yellow-500 transition-colors text-sm font-medium ${pathname === "/ethos" || pathname === "/ethos/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
-            Ethos
-          </a>
+          <div class="flex-1 flex justify-center items-center gap-6 sm:gap-10 md:gap-16">
+            <a href="/" class={`hover:text-yellow-500 transition-colors text-[13px] sm:text-sm font-medium whitespace-nowrap ${pathname === "/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+              Home
+            </a>
+            <a href="/about" class={`hover:text-yellow-500 transition-colors text-[13px] sm:text-sm font-medium whitespace-nowrap ${pathname === "/about" || pathname === "/about/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+              About
+            </a>
+            <a href="/posts" class={`hover:text-yellow-500 transition-colors text-[13px] sm:text-sm font-medium whitespace-nowrap ${pathname.includes("/posts") ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+              Posts
+            </a>
+            <a href="/ethos" class={`hover:text-yellow-500 transition-colors text-[13px] sm:text-sm font-medium whitespace-nowrap ${pathname === "/ethos" || pathname === "/ethos/" ? "text-yellow-500 border-b-2 border-yellow-500" : ""}`}>
+              Ethos
+            </a>
+          </div>
 
-          <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-2"></div>
-
-          <button id="theme-toggle" class="-ml-12 hover:scale-110 transition-transform focus:outline-none">
-            🌙
-          </button>
+          <div class="flex items-center pl-2">
+            <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-3"></div>
+            <button id="theme-toggle" class="hover:scale-110 transition-transform focus:outline-none text-base">
+              🌙
+            </button>
+          </div>
         </nav>
       </div>
     </header>
