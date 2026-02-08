@@ -30,10 +30,10 @@ if (!frontmatter) {
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <article class="prose dark:prose-invert max-w-none">
-    <h1>{frontmatter.title}</h1>
+  <article class="prose dark:prose-invert max-w-none prose-headings:no-underline">
+    <h1 class="mb-4">{frontmatter.title}</h1>
 
-    <p class="text-sm text-gray-500 dark:text-gray-400">
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
       {frontmatter.date} • <span id="readingTime">—</span>
     </p>
 
@@ -41,61 +41,126 @@ if (!frontmatter) {
       <img
         src={frontmatter.hero_image}
         alt={frontmatter.title}
-        class="rounded border dark:border-gray-800"
+        class="rounded-2xl border dark:border-gray-800 w-full object-cover max-h-[500px] mb-12"
       />
     ) : null}
 
-    <div class="mt-6 grid md:grid-cols-3 gap-6">
-      <div class="md:col-span-2" id="article">
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+      <div class="md:col-span-7 lg:col-span-8" id="article">
         <Content />
       </div>
 
-      <aside class="md:col-span-1">
-        <div id="toc" class="sticky top-24 text-sm"></div>
+      <aside class="hidden md:block md:col-span-5 lg:col-span-4">
+        <div 
+          id="toc-container" 
+          class="sticky top-32 p-5 rounded-2xl border border-gray-200/50 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] backdrop-blur-md shadow-sm"
+        >
+          <p class="text-[10px] uppercase tracking-[0.2em] font-mono mb-4 opacity-50 dark:text-white">Table of Contents</p>
+          <nav id="toc" class="space-y-1"></nav>
+        </div>
       </aside>
     </div>
   </article>
 
+  <style is:global>
+    /* THE FIX: Specifically targeting the prose-generated headings to remove underlines */
+    .prose h1, .prose h2, .prose h3, .prose h4 {
+      text-decoration: none !important;
+      border-bottom: none !important;
+    }
+
+    /* Keep the rest of your beautiful styling untouched */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    h2, h3 {
+      scroll-margin-top: 120px;
+    }
+
+    .toc-link {
+      @apply block py-1.5 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-500 no-underline text-[13px] whitespace-nowrap overflow-hidden text-ellipsis;
+    }
+    
+    .toc-link.active {
+      @apply text-yellow-600 dark:text-yellow-500 font-bold border-l-2 border-yellow-500 pl-3 -ml-3;
+      text-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+    }
+
+    .toc-h3 {
+      @apply ml-4 text-[12px] opacity-80;
+    }
+
+    .toc-number {
+      @apply mr-2 opacity-60 font-mono inline-block min-w-[20px];
+    }
+  </style>
+
   <script is:inline>
     (function () {
-      // Reading time
       const article = document.getElementById("article");
-      if (article) {
-        const words = (article.innerText || "").trim().split(/\s+/).length;
-        const mins = Math.max(1, Math.round(words / 200));
-        const rt = document.getElementById("readingTime");
-        if (rt) rt.innerText = mins + " min read";
-      }
-
-      // Table of Contents
       const toc = document.getElementById("toc");
       if (!article || !toc) return;
 
-      const headings = article.querySelectorAll("h2, h3");
+      const words = (article.innerText || "").trim().split(/\s+/).length;
+      const mins = Math.max(1, Math.round(words / 200));
+      const rt = document.getElementById("readingTime");
+      if (rt) rt.innerText = mins + " min read";
+
+      const headings = Array.from(article.querySelectorAll("h2, h3"));
       if (headings.length === 0) {
-        toc.innerHTML = "<em>No sections</em>";
+        const container = document.getElementById("toc-container");
+        if (container) container.style.display = 'none';
         return;
       }
 
-      var html = "<strong>Table of contents</strong><ul style='margin-top:8px'>";
-      headings.forEach(function (h) {
-        var id = h.innerText
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)/g, "");
-
+      headings.forEach((h, index) => {
+        const id = h.innerText.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
         h.id = id;
 
-        html +=
-          '<li style="margin-bottom:6px"><a href="#' +
-          id +
-          '" class="underline">' +
-          h.innerText +
-          "</a></li>";
+        const link = document.createElement("a");
+        link.href = `#${id}`;
+        
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "toc-number";
+        numberSpan.innerText = (index + 1) + ".";
+        
+        const textSpan = document.createElement("span");
+        textSpan.innerText = h.innerText;
+
+        link.appendChild(numberSpan);
+        link.appendChild(textSpan);
+        
+        link.title = h.innerText; 
+        link.classList.add("toc-link");
+        if (h.tagName === "H3") link.classList.add("toc-h3");
+        link.setAttribute("data-id", id);
+        
+        link.addEventListener("click", (e) => {
+          document.querySelectorAll(".toc-link").forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+        });
+        
+        toc.appendChild(link);
       });
 
-      html += "</ul>";
-      toc.innerHTML = html;
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -70% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            document.querySelectorAll(".toc-link").forEach((l) => l.classList.remove("active"));
+            const activeLink = document.querySelector(`.toc-link[data-id="${entry.target.id}"]`);
+            if (activeLink) activeLink.classList.add("active");
+          }
+        });
+      }, observerOptions);
+
+      headings.forEach((h) => observer.observe(h));
     })();
   </script>
 </BaseLayout>
