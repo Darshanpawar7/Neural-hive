@@ -1,9 +1,88 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
+
 <BaseLayout title="About — ML Mondays">
-  <article class="prose dark:prose-invert">
-    <h1>About</h1>
-    <p>This is Neural Hive ML Mondays. We are a student-run AI/ML community focused on learning and sharing. Our posts are curated and written to help readers build strong intuition and practical skills.</p>
-  </article>
+  <div class="star-background">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+  </div>
+
+  <div class="relative z-10 w-full">
+    <article class="prose dark:prose-invert max-w-none flex flex-col items-center">
+      
+      <h1 class="text-center text-6xl md:text-8xl font-bold mb-32 mt-16 !no-underline border-none">
+        About
+      </h1>
+      
+      <div class="max-w-2xl text-center leading-relaxed text-lg md:text-xl px-4">
+        <p>
+          This is Neural Hive ML Mondays. We are a student-run AI/ML community 
+          focused on learning and sharing. Our posts are curated and written 
+          to help readers build strong intuition and practical skills.
+        </p>
+      </div>
+
+      <div class="mt-32 mb-16">
+        <img 
+          src="/uploads/honey.png" 
+          alt="Honey Dipper" 
+          class="w-64 md:w-64 h-auto opacity-90"
+        />
+      </div>
+    </article>
+  </div>
+
+  <style>
+    /* Ensure the star background never overlaps content or the footer */
+    .star-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1; /* Pushed behind everything */
+      pointer-events: none;
+      background: transparent;
+    }
+
+    :global(.dark) .star-background {
+      background: #010409;
+    }
+
+    .stars, .twinkling {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    :global(.dark) .stars, :global(.dark) .twinkling {
+      display: block;
+    }
+
+    .stars {
+      background: #000 url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+      z-index: -2;
+    }
+
+    .twinkling {
+      background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png) repeat;
+      z-index: -1;
+      animation: move-twink-back 400s linear infinite;
+    }
+
+    @keyframes move-twink-back {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
+    }
+
+    /* Force-kill any prose-related underlines/borders on H1 */
+    h1 {
+      text-decoration: none !important;
+      border: none !important;
+    }
+  </style>
 </BaseLayout>
