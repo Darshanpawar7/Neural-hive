@@ -7,23 +7,111 @@ const posts = Object.values(modules)
   .map((m:any)=>m.frontmatter)
   .sort((a:any,b:any)=>new Date(b.date).getTime()-new Date(a.date).getTime());
 ---
-<BaseLayout title="All Posts">
-  <h1># All articles</h1>
+<BaseLayout title="Archive — ML Mondays">
+  <div class="max-w-4xl mx-auto py-20 px-4">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+      <div>
+        <h2 class="text-[10px] uppercase tracking-[0.5em] font-mono mb-4 text-yellow-600 dark:text-yellow-500">The Collection</h2>
+        <h1 class="text-4xl md:text-5xl font-black tracking-tighter uppercase no-underline select-none">
+          Archive
+        </h1>
+        <div class="h-1 w-20 bg-yellow-500 mt-4"></div>
+      </div>
 
-  <hr/>
+      <div class="relative group w-full md:w-80">
+        <input 
+          type="text" 
+          id="post-search" 
+          placeholder="Search the hive..." 
+          class="w-full bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-yellow-500/50 transition-all duration-300 shadow-sm group-hover:shadow-md"
+        />
+        <div class="absolute right-5 top-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-yellow-500 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+    </div>
 
-  <ul class="space-y-4">
-    {posts.map((p:any)=>(
-      <li>
-        * <a href={`/posts/${p.slug}`} class="post-link">
-          {p.title}
-        </a>
-        <span class="text-gray-400 text-sm">
-          {p.date} • {p.est_read || p.read_time || "8 min"} read
-        </span>
-      </li>
-    ))}
-  </ul>
+    <div id="posts-container" class="space-y-12">
+      {posts.map((post: any) => (
+        <article class="post-item group relative flex flex-col md:flex-row gap-8 items-center p-4 rounded-[2.5rem] transition-all duration-500 hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+          <div class="w-full md:w-64 aspect-[4/3] overflow-hidden rounded-[2rem] border border-gray-100 dark:border-white/5 shrink-0">
+            <img 
+              src={post.hero_image} 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              alt={post.title}
+            />
+          </div>
 
-  <hr/>
+          <div class="flex flex-col grow py-4">
+            <div class="mb-4 flex items-center gap-4">
+              <span class="text-[9px] font-mono uppercase tracking-widest py-1 px-3 rounded-full bg-yellow-500/10 text-yellow-600 dark:text-yellow-500">
+                {post.date}
+              </span>
+              <span class="text-[9px] font-mono opacity-40 uppercase tracking-widest font-bold">
+                {post.read_time || post.est_read || "5 min"} read
+              </span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 leading-tight group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors duration-300">
+              <a href={`/posts/${post.slug}`} class="article-title no-underline">{post.title}</a>
+            </h2>
+
+            <p class="article-desc text-sm leading-relaxed opacity-60 dark:text-gray-300 line-clamp-2 md:line-clamp-3 mb-6">
+              {post.description}
+            </p>
+
+            <div class="mt-auto">
+              <a href={`/posts/${post.slug}`} class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-yellow-600 dark:text-yellow-500 no-underline group/link">
+                Read Post
+                <span class="transition-transform duration-300 group-hover/link:translate-x-2">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div id="no-results" class="hidden text-center py-20">
+      <p class="text-lg opacity-40 font-mono uppercase tracking-widest">No articles found in the hive vault.</p>
+    </div>
+  </div>
 </BaseLayout>
+
+<script is:inline>
+  const searchInput = document.getElementById('post-search');
+  const posts = document.querySelectorAll('.post-item');
+  const noResults = document.getElementById('no-results');
+
+  searchInput?.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    posts.forEach(post => {
+      const title = post.querySelector('.article-title')?.textContent?.toLowerCase() || '';
+      const desc = post.querySelector('.article-desc')?.textContent?.toLowerCase() || '';
+      
+      if (title.includes(term) || desc.includes(term)) {
+        post.classList.remove('hidden');
+        post.classList.add('flex');
+        visibleCount++;
+      } else {
+        post.classList.remove('flex');
+        post.classList.add('hidden');
+      }
+    });
+
+    if (visibleCount === 0) {
+      noResults?.classList.remove('hidden');
+    } else {
+      noResults?.classList.add('hidden');
+    }
+  });
+</script>
+
+<style>
+  h1, h2 {
+    text-decoration: none !important;
+  }
+</style>

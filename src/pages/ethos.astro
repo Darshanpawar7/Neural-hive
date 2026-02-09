@@ -6,44 +6,64 @@ const readTime = "1 min read";
 ---
 
 <BaseLayout title="Ethos — ML Mondays">
-  <article class="prose dark:prose-invert">
-    
-    <!-- Title -->
-    <h1>Ethos</h1>
+  <div class="max-w-4xl mx-auto py-20 px-4">
+    <div class="text-center mb-20">
+      <h2 class="text-[10px] uppercase tracking-[0.5em] font-mono mb-4 text-yellow-600 dark:text-yellow-500">Our Manifesto</h2>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6 bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600 dark:from-white dark:to-gray-400 no-underline select-none">
+        Ethos
+      </h1>
+      <div class="h-1 w-24 bg-yellow-500 mx-auto"></div>
+    </div>
 
-    <!-- Meta -->
-    <p class="opacity-70 text-sm">
-      Posted on {date} • {readTime}
-    </p>
+    <div class="grid grid-cols-1 gap-12">
+      <!-- Intro Card -->
+      <div class="relative p-10 md:p-16 rounded-[3rem] border border-gray-100 dark:border-white/5 bg-white dark:bg-white/[0.02] shadow-2xl shadow-gray-200/50 dark:shadow-none overflow-hidden">
+        <div class="absolute top-0 right-0 p-8 opacity-5 dark:opacity-10 pointer-events-none">
+           <svg class="w-32 h-32 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z"/></svg>
+        </div>
 
-    <!-- Dotted Divider -->
-    <hr
-      class="border-0 my-6"
-      style="border-bottom: 3px dotted currentColor;"
-    />
+        <div class="relative z-10">
+          <p class="text-2xl md:text-3xl font-medium text-gray-800 dark:text-gray-100 mb-12 leading-tight">
+            ML Mondays is built on <span class="text-yellow-600 dark:text-yellow-500">curiosity</span>, <span class="text-yellow-600 dark:text-yellow-500">collaboration</span>, and <span class="text-yellow-600 dark:text-yellow-500">responsibility</span>.
+          </p>
 
-    <!-- Ethos Paragraph -->
-    <p>
-      ML Mondays is built on curiosity, collaboration, and responsibility.
-      We believe in learning by building, sharing knowledge openly, and
-      communicating ideas with clarity. Every post strives to be high-quality,
-      reproducible, and genuinely useful. We encourage thoughtful discussion,
-      ethical thinking in AI & ML, and a supportive community where everyone
-      can grow together.
-    </p>
+          <div class="prose prose-lg dark:prose-invert max-w-none">
+            <p class="text-lg opacity-70 leading-relaxed mb-8">
+              We believe in learning by building, sharing knowledge openly, and
+              communicating ideas with clarity. Every post strives to be high-quality,
+              reproducible, and genuinely useful.
+            </p>
+          </div>
 
-    <!-- Bullet Ethos -->
-    <ul>
-      <li><strong>Quality Writing</strong> — Helpful, thoughtful, and meaningful content.</li>
-      <li><strong>Clarity & Reproducibility</strong> — Work that can be understood, replicated, and built upon.</li>
-      <li><strong>Ethical Thinking</strong> — Awareness and responsibility in AI development.</li>
-      <li><strong>Community Learning</strong> — Collaboration, mentorship, and curiosity-driven growth.</li>
-    </ul>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            {[
+              { title: "Quality Writing", desc: "Helpful, thoughtful, and meaningful content that respects the reader's time." },
+              { title: "Clarity", desc: "Work that can be understood, replicated, and built upon by anyone in the hive." },
+              { title: "Ethics", desc: "Awareness and responsibility in every line of code and every model trained." },
+              { title: "Community", desc: "Collaboration and mentorship over competition and gatekeeping." }
+            ].map(pill => (
+              <div class="flex items-start gap-4">
+                <div class="w-2 h-2 mt-2 rounded-full bg-yellow-500 shrink-0"></div>
+                <div>
+                  <h4 class="font-bold text-sm uppercase tracking-widest mb-1">{pill.title}</h4>
+                  <p class="text-sm opacity-60 line-height-relaxed">{pill.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-    <!-- Bottom dotted separator -->
-    <hr
-      class="border-0 my-6"
-      style="border-bottom: 3px dotted currentColor;"
-    />
-  </article>
+      <!-- Closing -->
+      <div class="text-center py-10">
+        <p class="text-sm font-mono uppercase tracking-[0.3em] opacity-40">Updated August 2025 • Neural Hive</p>
+      </div>
+    </div>
+  </div>
 </BaseLayout>
+
+<style>
+  h1, h2, h3, h4 {
+    text-decoration: none !important;
+  }
+</style>

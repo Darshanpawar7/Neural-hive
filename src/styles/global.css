@@ -15,7 +15,9 @@ html.dark body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-decoration: underline;
   text-underline-offset: 6px;
   text-decoration-thickness: 2px;
@@ -27,14 +29,16 @@ hr {
   border-top: 2px dotted var(--border);
   margin: 2rem 0;
 }
+
 html.dark hr {
-  border-top-color: rgba(255,211,110,.6);
+  border-top-color: rgba(255, 211, 110, .6);
 }
 
 /* Links */
 a {
   color: inherit;
 }
+
 a:hover {
   color: var(--accent);
 }
@@ -46,6 +50,7 @@ a:hover {
   border-radius: 12px;
   padding: 14px;
 }
+
 html.dark .card {
   background: #0f0f18;
   border: 1px solid #2c2c3a;
